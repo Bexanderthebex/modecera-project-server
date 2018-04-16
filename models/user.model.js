@@ -2,6 +2,7 @@ import Promise from "bluebird";
 import mongoose from "mongoose";
 import httpStatus from "http-status";
 import bcrypt from "bcrypt";
+import passportLocalMongoose from "passport-local-mongoose";
 import APIError from "../helpers/APIError";
 
 const UserSchema = new mongoose.Schema({
@@ -32,16 +33,9 @@ const UserSchema = new mongoose.Schema({
  */
 
 /* methods */
-UserSchema.method({
-  comparePassword(candidatePassword, cb) {
-    bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-      if (err) {
-        return cb(err);
-      }
-      cb(null, isMatch);
-    });
-  }
-});
+UserSchema.methods.validPassword = function(password) {
+  return bcrypt.compareSync(password, this.password);
+};
 
 /* statics */
 UserSchema.statics = {
@@ -52,6 +46,23 @@ UserSchema.statics = {
    */
   get(email) {
     return this.findOne({ email: email })
+      .exec()
+      .then(user => {
+        if (user) {
+          return user;
+        }
+        const err = new APIError("No such user exists!", httpStatus["404"]);
+        return Promise.reject(err);
+      });
+  },
+
+  /**
+   * Get user by ID
+   * @param {_id}
+   * @returns {Promise<User, APIError>}
+   */
+  getById(id) {
+    return this.findById(id)
       .exec()
       .then(user => {
         if (user) {
@@ -82,4 +93,7 @@ UserSchema.pre("save", function(next) {
   });
 });
 
+/**
+ * @typedef User
+ */
 export default mongoose.model("User", UserSchema);

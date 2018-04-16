@@ -1,4 +1,8 @@
 import User from "../models/user.model";
+import httpStatus from "http-status";
+import passport from "passport";
+import APIError from "../helpers/APIError";
+// import
 
 function create(req, res, next) {
   const user = new User({
@@ -12,4 +16,11 @@ function create(req, res, next) {
     .catch(error => next(error));
 }
 
-export default { create };
+function sample(req, res) {
+  console.log("pumasok sa sample");
+  res.json(req.user);
+}
+
+// do logout functionality
+
+export default { create, sample };
