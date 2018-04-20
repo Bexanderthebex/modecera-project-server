@@ -14,14 +14,14 @@ router
   .route("/signup")
 
   /* POST /api/users/signup - Create new user */
-  .post(validate(paramValidation.createUser), userCtrl.create);
+  .post(validate(paramValidation.User), userCtrl.create);
 
 router
   .route("/login")
 
   /* POST /api/users/login - user login */
   .post(
-    validate(paramValidation.createUser),
+    validate(paramValidation.User),
     /* passport.authenticate("local") */
     function(req, res, next) {
       passport.authenticate("local", { session: false }, (err, user, info) => {
