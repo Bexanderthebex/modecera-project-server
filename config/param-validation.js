@@ -14,20 +14,8 @@ export default {
   },
   Layer: {
     body: {
-      layer_type: Joi.string().valid([
-        "marker",
-        "polyline",
-        "polygon",
-        "rectangle",
-        "circle",
-        "circlemarker",
-        "layergroup",
-        "featuregroup",
-        "geojson"
-      ]),
       bucket: Joi.string().required(),
-      name: Joi.string().required(),
-      link: Joi.string().required()
+      name: Joi.string().required()
     }
   },
   deleteLayer: {

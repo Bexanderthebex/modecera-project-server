@@ -7,27 +7,7 @@ import LayerStyle from "./layerStyle.model";
 const LayerStyleSchema = mongoose.model("LayerStyle").schema;
 
 const LayerSchema = new mongoose.Schema({
-  layer_type: {
-    type: String,
-    enum: [
-      "marker",
-      "polyline",
-      "polygon",
-      "rectangle",
-      "circle",
-      "circlemarker",
-      "layergroup",
-      "featuregroup",
-      "geojson"
-    ],
-    required: true,
-    validate: [
-      function(val) {
-        return this.layer_type.includes(val);
-      },
-      "type not supported"
-    ]
-  },
+  /* probably make a bucket schema too */
   bucket: {
     type: String,
     required: true
@@ -39,7 +19,6 @@ const LayerSchema = new mongoose.Schema({
   },
   link: {
     type: String,
-    required: true,
     unique: true
   },
   style: LayerStyleSchema
@@ -58,7 +37,7 @@ LayerSchema.statics = {
         if (layer) {
           return layer;
         }
-        const err = new APIError("No such layer exists", httpStatus["204"]);
+        const err = new APIError("No such layer exists", httpStatus.NOT_FOUND);
         return Promise.reject(err);
       });
   },
@@ -75,8 +54,7 @@ LayerSchema.statics = {
           return layers;
         }
         const err = new APIError(
-          "There are currently no layers inside the database",
-          httpStatus["204"]
+          "An error occurred when fetching data from the database"
         );
         return Promise.reject(err);
       });

@@ -51,7 +51,7 @@ UserSchema.statics = {
         if (user) {
           return user;
         }
-        const err = new APIError("No such user exists!", httpStatus["404"]);
+        const err = new APIError("No such user exists!", httpStatus.NOT_FOUND);
         return Promise.reject(err);
       });
   },
@@ -68,7 +68,7 @@ UserSchema.statics = {
         if (user) {
           return user;
         }
-        const err = new APIError("No such user exists!", httpStatus["404"]);
+        const err = new APIError("No such user exists!", httpStatus.NOT_FOUND);
         return Promise.reject(err);
       });
   }
