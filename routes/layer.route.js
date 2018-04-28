@@ -21,7 +21,7 @@ router
   .post(validate(paramValidation.Layer), layerCtrl.addLayer)
 
   /* DELETE /api/layers - deletes layers */
-  .delete(layerCtrl.removeLayer, layerCtrl.deleteLayer);
+  .delete(layerCtrl.deleteLayer, layerCtrl.removeLayer);
 
 router
   .route("/upload")

@@ -66,22 +66,29 @@ function uploadLayer(req, res, next) {
   });
 
   stream.on("finish", () => {
-    return next();
+    return res.status(204).json();
   });
 
   stream.end(req.file.buffer);
 }
 
 function deleteLayer(req, res, next) {
-  let files = ["Aborlan.geojsonn", "Balogo.geojsonn", "Carranglan.geojsonn"];
+  // console.log(req.body);  
+
+  let files = req.body.map(map => {
+    return { name: map["name"]};
+  });
+
+  // console.log(files);
 
   files.forEach(filename => {
+    console.log(filename.name);
     storage
       .bucket("modecera-geojson-files")
-      .file(filename)
+      .file(filename.name)
       .delete()
       .then(() => {
-        return res.json("success");
+        return next();
       })
       .catch(err => {
         next(new APIError(err.message, httpStatus.NOT_FOUND));
