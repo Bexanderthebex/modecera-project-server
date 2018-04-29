@@ -29,8 +29,8 @@ router
   /* POST /api/layers/upload - upload layer then update database */
   .post(
     multer.single("sample"),
-    layerCtrl.uploadLayer,
-    layerController.addLayer
+    layerController.addLayer,
+    layerCtrl.uploadLayer
   );
 
 export default router;

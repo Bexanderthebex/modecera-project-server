@@ -17,11 +17,11 @@ function addLayer(req, res, next) {
 
   layer
     .save()
-    .then(savedLayer => res.status(201).json(savedLayer))
+    .then(savedLayer => next())
     .catch(error => {
       return next(
         new APIError(
-          "Error adding data to the database",
+          "Layer already exists",
           httpStatus.BAD_REQUEST
         )
       );
@@ -49,7 +49,7 @@ function uploadLayer(req, res, next) {
       new APIError("File to be uploaded is required", httpStatus.BAD_REQUEST)
     );
   }
-
+  
   const stream = storage
     .bucket("modecera-geojson-files")
     .file(req.file.originalname)
@@ -66,7 +66,8 @@ function uploadLayer(req, res, next) {
   });
 
   stream.on("finish", () => {
-    return res.status(204).json();
+    console.log("nag-finish");
+    return res.status(204).json({"message": "sucess", "code": 204});
   });
 
   stream.end(req.file.buffer);
@@ -74,6 +75,7 @@ function uploadLayer(req, res, next) {
 
 function deleteLayer(req, res, next) {
   // console.log(req.body);  
+  console.log(req.body);
 
   let files = req.body.map(map => {
     return { name: map["name"]};
