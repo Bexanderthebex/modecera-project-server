@@ -12,6 +12,10 @@ const LayerSchema = new mongoose.Schema({
     type: String,
     required: true
   },
+  label_group: {
+    type: String,
+    label: true
+  },
   name: {
     type: String,
     required: true,

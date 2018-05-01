@@ -15,6 +15,7 @@ export default {
   Layer: {
     body: {
       bucket: Joi.string().required(),
+      label_group: Joi.string().required(),
       name: Joi.string().required()
     }
   },

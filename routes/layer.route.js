@@ -24,6 +24,12 @@ router
   .delete(layerCtrl.deleteLayer, layerCtrl.removeLayer);
 
 router
+  .route("/labelgroup")
+
+  /*POST /api/layers/labelgroup - get layers by name*/
+  .post(layerCtrl.getLayerByLabelGroup);
+
+router
   .route("/upload")
 
   /* POST /api/layers/upload - upload layer then update database */

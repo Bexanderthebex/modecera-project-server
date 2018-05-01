@@ -10,8 +10,10 @@ const storage = new Storage({
 
 /* data persistence controllers */
 function addLayer(req, res, next) {
+
   const layer = new Layer({
     bucket: "modecera-geojson-files",
+    label_group: req.body.label_group,
     name: req.file.originalname
   });
 
@@ -40,6 +42,12 @@ function getAllLayers(req, res, next) {
   Layer.getAll()
     .then(layers => res.status(200).json(layers))
     .catch(error => next(err));
+}
+
+function getLayerByLabelGroup(req, res) {
+	Layer.find({label_group: req.body.label_group})
+		.then(result => res.status(200).json(result))
+		.catch(error => next(error))
 }
 
 /* google cloud platform controllers */
@@ -103,5 +111,6 @@ export default {
   getAllLayers,
   removeLayer,
   uploadLayer,
-  deleteLayer
+  deleteLayer,
+  getLayerByLabelGroup
 };
