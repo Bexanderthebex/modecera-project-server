@@ -72,6 +72,8 @@ LayerSchema.pre("save", function(next) {
     layer.name
   }?alt=media`;
 
+  // this.style.save();
+
   next();
 });
 

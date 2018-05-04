@@ -1,4 +1,5 @@
 import Layer from "../models/layer.model";
+import layerStyle from "../models/layerStyle.model";
 import httpStatus from "http-status";
 import APIError from "../helpers/APIError";
 import Storage from "@google-cloud/storage";
@@ -14,7 +15,8 @@ function addLayer(req, res, next) {
   const layer = new Layer({
     bucket: "modecera-geojson-files",
     label_group: req.body.label_group,
-    name: req.file.originalname
+    name: req.file.originalname,
+    style: new layerStyle({})
   });
 
   layer
@@ -74,7 +76,6 @@ function uploadLayer(req, res, next) {
   });
 
   stream.on("finish", () => {
-    console.log("nag-finish");
     return res.status(204).json({"message": "sucess", "code": 204});
   });
 
@@ -82,14 +83,10 @@ function uploadLayer(req, res, next) {
 }
 
 function deleteLayer(req, res, next) {
-  // console.log(req.body);  
-  console.log(req.body);
-
   let files = req.body.map(map => {
     return { name: map["name"]};
   });
 
-  // console.log(files);
 
   files.forEach(filename => {
     console.log(filename.name);
@@ -97,13 +94,11 @@ function deleteLayer(req, res, next) {
       .bucket("modecera-geojson-files")
       .file(filename.name)
       .delete()
-      .then(() => {
-        return next();
-      })
       .catch(err => {
         next(new APIError(err.message, httpStatus.NOT_FOUND));
       });
   });
+  next();
 }
 
 export default {
