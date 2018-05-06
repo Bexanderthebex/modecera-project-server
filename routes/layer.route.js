@@ -3,7 +3,6 @@ import validate from "express-validation";
 import paramValidation from "../config/param-validation";
 import layerCtrl from "../controllers/layer.controller";
 import Multer from "multer";
-import layerController from "../controllers/layer.controller";
 
 const multer = Multer({
   storage: Multer.memoryStorage()
@@ -33,10 +32,6 @@ router
   .route("/upload")
 
   /* POST /api/layers/upload - upload layer then update database */
-  .post(
-    multer.single("sample"),
-    layerController.addLayer,
-    layerCtrl.uploadLayer
-  );
+  .post(multer.single("sample"), layerCtrl.addLayer, layerCtrl.uploadLayer);
 
 export default router;

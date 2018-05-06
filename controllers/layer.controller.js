@@ -98,6 +98,7 @@ function deleteLayer(req, res, next) {
         next(new APIError(err.message, httpStatus.NOT_FOUND));
       });
   });
+  // if there are no errors
   next();
 }
 
