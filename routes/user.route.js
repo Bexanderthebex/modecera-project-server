@@ -11,6 +11,12 @@ const router = express.Router();
 strategy();
 
 router
+  .route("")
+
+  /* POST /api/users - Get user by Id*/
+  .post(userCtrl.get);
+
+router
   .route("/signup")
 
   /* POST /api/users/signup - Create new user */
@@ -31,21 +37,30 @@ router
             user: user
           });
         }
-        req.login(user, { session: false }, err => {
+        console.log(user);
+        if (!user.isActivated) {
+          console.log("pumasok sa not authenticated");
+          return res.status(400).json({
+            message: "User not yet Authenticated"
+          });
+        }
+        req.login(user._id, { session: false }, err => {
           if (err != null) {
-            res.send(err);
+            res.status(404).json({ message: "user", error: err });
           }
+          console.log("hnggang dito");
           // generate a signed son web token with the contents of user object and return it in the response
-          const token = jwt.sign(user, "your_jwt_secret");
-          return res.json({ user, token });
+          // const token = jwt.sign(user._id, "your_jwt_secret");
+          return res.json({ user });
         });
       })(req, res);
     }
   );
 
-router.route("logout").post();
-
 router
-  .route("/sample")
-  .get(passport.authenticate("jwt", { session: false }), userCtrl.sample);
+  .route("/activate")
+
+  /* PUT /api/users/activate - user activation*/
+  .put(userCtrl.activate);
+
 export default router;

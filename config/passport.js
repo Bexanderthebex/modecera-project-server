@@ -20,7 +20,7 @@ export default function() {
         User.get(email)
           .then(result => {
             if (result.validPassword(user.password)) {
-              return done(null, result.id);
+              return done(null, result);
             }
             return done(null, false);
           })

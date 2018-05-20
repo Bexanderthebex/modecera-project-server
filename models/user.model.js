@@ -6,6 +6,14 @@ import passportLocalMongoose from "passport-local-mongoose";
 import APIError from "../helpers/APIError";
 
 const UserSchema = new mongoose.Schema({
+  first_name: {
+    type: String,
+    required: true
+  },
+  last_name: {
+    type: String,
+    required: true
+  },
   email: {
     type: String,
     unique: true,
@@ -19,6 +27,10 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false
   },
+  activationCode: {
+    type: Number,
+    default: randomIntInc(100000, 999999)
+  },
   dateCreated: {
     type: Date,
     default: Date.now
@@ -31,6 +43,11 @@ const UserSchema = new mongoose.Schema({
  * - validations
  * - virtuals
  */
+
+/* helpers */
+function randomIntInc(low, high) {
+  return Math.floor(Math.random() * (high - low + 1) + low);
+}
 
 /* methods */
 UserSchema.methods.validPassword = function(password) {

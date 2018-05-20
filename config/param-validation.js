@@ -4,6 +4,8 @@ export default {
   // POST /api/users
   User: {
     body: {
+      first_name: Joi.string(),
+      last_name: Joi.string(),
       email: Joi.string()
         .email()
         .required(),
